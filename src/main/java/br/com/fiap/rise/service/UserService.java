@@ -6,11 +6,20 @@ import br.com.fiap.rise.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    public UserDTO findById (UUID id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
+        return convertToDTO(user);
+    }
 
     public UserDTO create (UserDTO userDTO) {
         if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
@@ -20,10 +29,7 @@ public class UserService {
             throw new RuntimeException("CPF já cadastrado.");
         }
 
-        User user = convertToEntity(userDTO);
-
-        User savedUser = userRepository.save(user);
-
+        User savedUser = userRepository.save(convertToEntity(userDTO));
         return convertToDTO(savedUser);
     }
 
