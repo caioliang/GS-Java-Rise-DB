@@ -18,7 +18,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> findById (@PathVariable UUID id) {
+    public ResponseEntity<UserDTO> findById(@PathVariable UUID id) {
         UserDTO user = userService.findById(id);
         return ResponseEntity.ok(user);
     }
@@ -27,5 +27,17 @@ public class UserController {
     public ResponseEntity<UserDTO> create(@RequestBody @Valid UserDTO userDTO) {
         UserDTO createUser = userService.create(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<UserDTO> update(@PathVariable UUID id, @RequestBody @Valid UserDTO userDTO) {
+        UserDTO updatedUser = userService.update(id, userDTO);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
