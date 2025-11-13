@@ -14,14 +14,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDTO findById (UUID id) {
+    public UserDTO findById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
         return convertToDTO(user);
     }
 
-    public UserDTO create (UserDTO userDTO) {
+    public UserDTO create(UserDTO userDTO) {
         if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
             throw new RuntimeException("Email já cadastrado.");
         }
@@ -31,6 +31,38 @@ public class UserService {
 
         User savedUser = userRepository.save(convertToEntity(userDTO));
         return convertToDTO(savedUser);
+    }
+
+    public UserDTO update(UUID id, UserDTO userDTO) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado para atualização."));
+
+        if (!existingUser.getEmail().equals(userDTO.getEmail())) {
+            if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+                throw new RuntimeException("O email " + userDTO.getEmail() + " já está cadastrado para outro usuário.");
+            }
+        }
+
+        if (!existingUser.getCpf().equals(userDTO.getCpf())) {
+            if (userRepository.findByCpf(userDTO.getCpf()).isPresent()) {
+                throw new RuntimeException("O CPF " + userDTO.getCpf() + " já está cadastrado para outro usuário.");
+            }
+        }
+
+        existingUser.setName(userDTO.getName());
+        existingUser.setEmail(userDTO.getEmail());
+        existingUser.setCpf(userDTO.getCpf());
+        existingUser.setBirthDate(userDTO.getBirthDate());
+
+        User updatedUser = userRepository.save(existingUser);
+        return convertToDTO(updatedUser);
+    }
+
+    public void delete(UUID id) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado para exclusão."));
+
+        userRepository.delete(existingUser);
     }
 
     private User convertToEntity(UserDTO dto) {
