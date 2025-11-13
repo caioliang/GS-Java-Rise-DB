@@ -15,7 +15,7 @@ import java.util.UUID;
 public class User {
 
     @Id
-    private final UUID id = UUID.randomUUID();
+    private UUID id = UUID.randomUUID();
 
     @NotBlank
     @Size(min = 2, max = 100)
