@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: postgres_rise
+    environment:
+      - 'POSTGRES_DB=rise'
+      - 'POSTGRES_PASSWORD=rise'
+      - 'POSTGRES_USER=rise'
+    ports:
+      - '5432:5432'
