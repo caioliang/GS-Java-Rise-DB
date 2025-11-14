@@ -16,6 +16,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class EducationalExperienceDTO {
 
+    private UUID id;
+
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UUID resumeId;
