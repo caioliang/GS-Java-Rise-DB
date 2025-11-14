@@ -21,11 +21,11 @@ public class WorkExperienceDTO {
     private UUID resumeId;
 
     @NotBlank
-    @Length(max = 100)
+    @Length(min = 3, max = 100)
     private String company;
 
     @NotBlank
-    @Length(max = 100)
+    @Length(min = 3, max = 100)
     private String role;
 
     @NotNull

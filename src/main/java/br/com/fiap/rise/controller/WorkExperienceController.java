@@ -21,27 +21,23 @@ public class WorkExperienceController {
 
     @GetMapping
     public ResponseEntity<List<WorkExperienceDTO>> findAllByResumeId(@PathVariable UUID resumeId) {
-        List<WorkExperienceDTO> workExperiences = workExperienceService.findByResumeId(resumeId);
-        return ResponseEntity.ok(workExperiences);
+        return ResponseEntity.ok(workExperienceService.findByResumeId(resumeId));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<WorkExperienceDTO> findById(@PathVariable UUID id) {
-        WorkExperienceDTO workExperience = workExperienceService.findById(id);
-        return ResponseEntity.ok(workExperience);
+        return ResponseEntity.ok(workExperienceService.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<WorkExperienceDTO> create(@PathVariable UUID resumeId, @RequestBody @Valid WorkExperienceDTO dto) {
         dto.setResumeId(resumeId);
-        WorkExperienceDTO createdWorkExperience = workExperienceService.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdWorkExperience);
+        return ResponseEntity.status(HttpStatus.CREATED).body(workExperienceService.create(dto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<WorkExperienceDTO> update(@PathVariable UUID id, @RequestBody @Valid WorkExperienceDTO dto) {
-        WorkExperienceDTO updatedWorkExperience = workExperienceService.update(id, dto);
-        return ResponseEntity.ok(updatedWorkExperience);
+        return ResponseEntity.ok(workExperienceService.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
