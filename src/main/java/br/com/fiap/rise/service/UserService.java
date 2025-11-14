@@ -23,9 +23,6 @@ public class UserService {
     }
 
     public UserDTO create(UserDTO userDTO) {
-        if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-            throw new RuntimeException("Email já cadastrado.");
-        }
         if (userRepository.findByCpf(userDTO.getCpf()).isPresent()) {
             throw new RuntimeException("CPF já cadastrado.");
         }
@@ -38,12 +35,6 @@ public class UserService {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado para atualização."));
 
-        if (!existingUser.getEmail().equals(userDTO.getEmail())) {
-            if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-                throw new RuntimeException("O email " + userDTO.getEmail() + " já está cadastrado para outro usuário.");
-            }
-        }
-
         if (!existingUser.getCpf().equals(userDTO.getCpf())) {
             if (userRepository.findByCpf(userDTO.getCpf()).isPresent()) {
                 throw new RuntimeException("O CPF " + userDTO.getCpf() + " já está cadastrado para outro usuário.");
@@ -51,7 +42,6 @@ public class UserService {
         }
 
         existingUser.setName(userDTO.getName());
-        existingUser.setEmail(userDTO.getEmail());
         existingUser.setCpf(userDTO.getCpf());
         existingUser.setBirthDate(userDTO.getBirthDate());
 
@@ -69,8 +59,6 @@ public class UserService {
     private User convertToEntity(UserDTO dto) {
         User user = new User();
         user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
         user.setCpf(dto.getCpf());
         user.setBirthDate(dto.getBirthDate());
 
@@ -80,7 +68,6 @@ public class UserService {
     private UserDTO convertToDTO(User entity) {
         UserDTO dto = new UserDTO();
         dto.setName(entity.getName());
-        dto.setEmail(entity.getEmail());
         dto.setCpf(entity.getCpf());
         dto.setBirthDate(entity.getBirthDate());
 
