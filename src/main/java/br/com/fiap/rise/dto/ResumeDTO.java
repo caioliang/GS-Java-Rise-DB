@@ -14,6 +14,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ResumeDTO {
 
+    private UUID id;
+
     @NotBlank
     private String objective;
 
