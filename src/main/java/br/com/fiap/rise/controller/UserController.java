@@ -21,20 +21,17 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable UUID id) {
-        UserDTO user = userService.findById(id);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userService.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<UserDTO> create(@RequestBody @Valid UserDTO userDTO) {
-        UserDTO createUser = userService.create(userDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(userDTO));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> update(@PathVariable UUID id, @RequestBody @Valid UserDTO userDTO) {
-        UserDTO updatedUser = userService.update(id, userDTO);
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok(userService.update(id, userDTO));
     }
 
     @DeleteMapping("/{id}")
