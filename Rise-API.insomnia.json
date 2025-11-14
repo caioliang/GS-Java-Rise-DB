@@ -1,0 +1,475 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-11-14T21:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_create_user",
+      "parentId": "fld_users",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/users",
+      "name": "Create User",
+      "description": "Cria um novo usuário no sistema",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"João da Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"password\": \"senha123456\",\n  \"cpf\": \"12345678901\",\n  \"birthDate\": \"1990-05-15\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1700000000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_user",
+      "parentId": "fld_users",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/users/{{ _.userId }}",
+      "name": "Get User by ID",
+      "description": "Busca um usuário pelo ID",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1699900000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_update_user",
+      "parentId": "fld_users",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/users/{{ _.userId }}",
+      "name": "Update User",
+      "description": "Atualiza os dados de um usuário",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"João da Silva Santos\",\n  \"email\": \"joao.silva.santos@email.com\",\n  \"password\": \"novaSenha123456\",\n  \"cpf\": \"12345678901\",\n  \"birthDate\": \"1990-05-15\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1699800000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_delete_user",
+      "parentId": "fld_users",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/users/{{ _.userId }}",
+      "name": "Delete User",
+      "description": "Remove um usuário do sistema",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1699700000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_resume",
+      "parentId": "fld_resume",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/users/{{ _.userId }}/resume",
+      "name": "Create Resume",
+      "description": "Cria um currículo para o usuário",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"objective\": \"Desenvolvedor Full Stack com foco em Java e Spring Boot\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1700000000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_resume",
+      "parentId": "fld_resume",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/users/{{ _.userId }}/resume",
+      "name": "Get Resume by User ID",
+      "description": "Busca o currículo de um usuário",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1699900000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_update_resume",
+      "parentId": "fld_resume",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/users/{{ _.userId }}/resume",
+      "name": "Update Resume",
+      "description": "Atualiza o currículo do usuário",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"objective\": \"Desenvolvedor Full Stack Senior especializado em Java, Spring Boot e arquitetura de microsserviços\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1699800000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_delete_resume",
+      "parentId": "fld_resume",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/users/{{ _.userId }}/resume",
+      "name": "Delete Resume",
+      "description": "Remove o currículo do usuário",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1699700000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_work_exp",
+      "parentId": "fld_work_exp",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/resumes/{{ _.resumeId }}/work-experiences",
+      "name": "Create Work Experience",
+      "description": "Adiciona uma experiência profissional ao currículo",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"company\": \"Tech Solutions Ltda\",\n  \"role\": \"Desenvolvedor Java Pleno\",\n  \"startDate\": \"2020-01-15\",\n  \"endDate\": \"2023-06-30\",\n  \"description\": \"Desenvolvimento de aplicações web usando Spring Boot, implementação de APIs RESTful e integração com bancos de dados PostgreSQL\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1700000000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_list_work_exp",
+      "parentId": "fld_work_exp",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/resumes/{{ _.resumeId }}/work-experiences",
+      "name": "Get All Work Experiences",
+      "description": "Lista todas as experiências profissionais do currículo",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1699900000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_work_exp",
+      "parentId": "fld_work_exp",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/resumes/{{ _.resumeId }}/work-experiences/{{ _.workExpId }}",
+      "name": "Get Work Experience by ID",
+      "description": "Busca uma experiência profissional específica",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1699850000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_update_work_exp",
+      "parentId": "fld_work_exp",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/resumes/{{ _.resumeId }}/work-experiences/{{ _.workExpId }}",
+      "name": "Update Work Experience",
+      "description": "Atualiza uma experiência profissional",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"company\": \"Tech Solutions Ltda\",\n  \"role\": \"Desenvolvedor Java Senior\",\n  \"startDate\": \"2020-01-15\",\n  \"endDate\": \"2023-06-30\",\n  \"description\": \"Desenvolvimento de aplicações web usando Spring Boot, implementação de APIs RESTful, integração com bancos de dados PostgreSQL e liderança de projetos\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1699800000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_delete_work_exp",
+      "parentId": "fld_work_exp",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/resumes/{{ _.resumeId }}/work-experiences/{{ _.workExpId }}",
+      "name": "Delete Work Experience",
+      "description": "Remove uma experiência profissional",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1699700000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_edu_exp",
+      "parentId": "fld_edu_exp",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/resumes/{{ _.resumeId }}/educational-experiences",
+      "name": "Create Educational Experience",
+      "description": "Adiciona uma formação acadêmica ao currículo",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"institution\": \"FIAP\",\n  \"course\": \"Análise e Desenvolvimento de Sistemas\",\n  \"startDate\": \"2018-01-15\",\n  \"endDate\": \"2020-12-20\",\n  \"description\": \"Graduação tecnológica com foco em desenvolvimento de software, banco de dados e arquitetura de sistemas\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1700000000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_list_edu_exp",
+      "parentId": "fld_edu_exp",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/resumes/{{ _.resumeId }}/educational-experiences",
+      "name": "Get All Educational Experiences",
+      "description": "Lista todas as formações acadêmicas do currículo",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1699900000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_edu_exp",
+      "parentId": "fld_edu_exp",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/resumes/{{ _.resumeId }}/educational-experiences/{{ _.eduExpId }}",
+      "name": "Get Educational Experience by ID",
+      "description": "Busca uma formação acadêmica específica",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1699850000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_update_edu_exp",
+      "parentId": "fld_edu_exp",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/resumes/{{ _.resumeId }}/educational-experiences/{{ _.eduExpId }}",
+      "name": "Update Educational Experience",
+      "description": "Atualiza uma formação acadêmica",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"institution\": \"FIAP - Faculdade de Informática e Administração Paulista\",\n  \"course\": \"Tecnólogo em Análise e Desenvolvimento de Sistemas\",\n  \"startDate\": \"2018-01-15\",\n  \"endDate\": \"2020-12-20\",\n  \"description\": \"Graduação tecnológica com foco em desenvolvimento de software, banco de dados, arquitetura de sistemas e metodologias ágeis\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1699800000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_delete_edu_exp",
+      "parentId": "fld_edu_exp",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "localhost:8080/resumes/{{ _.resumeId }}/educational-experiences/{{ _.eduExpId }}",
+      "name": "Delete Educational Experience",
+      "description": "Remove uma formação acadêmica",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1699700000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "fld_users",
+      "parentId": "wrk_rise",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Users",
+      "description": "Endpoints de gerenciamento de usuários",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1700000000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_resume",
+      "parentId": "wrk_rise",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Resume",
+      "description": "Endpoints de gerenciamento de currículos",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1699000000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_work_exp",
+      "parentId": "wrk_rise",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Work Experience",
+      "description": "Endpoints de experiências profissionais",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1698000000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_edu_exp",
+      "parentId": "wrk_rise",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Educational Experience",
+      "description": "Endpoints de formação acadêmica",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1697000000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_rise",
+      "parentId": null,
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Rise API",
+      "description": "API completa para gerenciamento de currículos",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_base",
+      "parentId": "wrk_rise",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Base Environment",
+      "data": {
+        "baseUrl": "http://localhost:8080",
+        "userId": "",
+        "resumeId": "",
+        "workExpId": "",
+        "eduExpId": ""
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "baseUrl",
+          "userId",
+          "resumeId",
+          "workExpId",
+          "eduExpId"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1700000000000,
+      "_type": "environment"
+    }
+  ]
+}
