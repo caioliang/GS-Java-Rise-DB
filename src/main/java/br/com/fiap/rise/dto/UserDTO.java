@@ -34,7 +34,7 @@ public class UserDTO {
     @Pattern(regexp = "\\d{11}")
     private String cpf;
 
-    @NotBlank
+    @NotNull
     @Past
     private LocalDate birthDate;
 }
