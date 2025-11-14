@@ -33,9 +33,7 @@ public class EducationalExperienceController {
     @PostMapping
     public ResponseEntity<EducationalExperienceDTO> create(@PathVariable UUID resumeId, @RequestBody @Valid EducationalExperienceDTO dto) {
         dto.setResumeId(resumeId);
-
-        EducationalExperienceDTO createdEducationalExperience = educationalExperienceService.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdEducationalExperience);
+        return ResponseEntity.status(HttpStatus.CREATED).body(educationalExperienceService.create(dto));
     }
 
     @PutMapping("/{id}")
