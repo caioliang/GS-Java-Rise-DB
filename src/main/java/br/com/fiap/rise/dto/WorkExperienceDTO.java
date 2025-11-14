@@ -33,5 +33,6 @@ public class WorkExperienceDTO {
 
     private LocalDate endDate;
 
+    @NotBlank
     private String description;
 }
