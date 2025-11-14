@@ -7,11 +7,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
+
+    private UUID id;
+
     @NotBlank
     @Size(min = 2, max = 100)
     private String name;
