@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -13,10 +14,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ResumeDTO {
 
-    @NotBlank(message = "Objective is required.")
+    @NotBlank
     private String objective;
 
-    @NotNull(message = "User ID is required to link the resume.")
+    @NotNull
     private UUID userId;
 
     private List<WorkExperienceDTO> workExperiences;
