@@ -1,6 +1,8 @@
 package br.com.fiap.rise.service;
 
 import br.com.fiap.rise.dto.UserDTO;
+import br.com.fiap.rise.exception.DataConflictException;
+import br.com.fiap.rise.exception.ResourceNotFoundException;
 import br.com.fiap.rise.model.User;
 import br.com.fiap.rise.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -17,14 +19,14 @@ public class UserService {
 
     public UserDTO findById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
 
         return convertToDTO(user);
     }
 
     public UserDTO create(UserDTO userDTO) {
         if (userRepository.findByCpf(userDTO.getCpf()).isPresent()) {
-            throw new RuntimeException("CPF já cadastrado.");
+            throw new DataConflictException("CPF já cadastrado.");
         }
 
         User savedUser = userRepository.save(convertToEntity(userDTO));
@@ -33,11 +35,11 @@ public class UserService {
 
     public UserDTO update(UUID id, UserDTO userDTO) {
         User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado para atualização."));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado para atualização."));
 
         if (!existingUser.getCpf().equals(userDTO.getCpf())) {
             if (userRepository.findByCpf(userDTO.getCpf()).isPresent()) {
-                throw new RuntimeException("O CPF " + userDTO.getCpf() + " já está cadastrado para outro usuário.");
+                throw new DataConflictException("O CPF " + userDTO.getCpf() + " já está cadastrado para outro usuário.");
             }
         }
 
@@ -51,7 +53,7 @@ public class UserService {
 
     public void delete(UUID id) {
         User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado para exclusão."));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado para exclusão."));
 
         userRepository.delete(existingUser);
     }

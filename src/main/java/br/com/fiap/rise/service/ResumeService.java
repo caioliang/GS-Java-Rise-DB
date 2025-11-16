@@ -3,6 +3,8 @@ package br.com.fiap.rise.service;
 import br.com.fiap.rise.dto.EducationalExperienceDTO;
 import br.com.fiap.rise.dto.ResumeDTO;
 import br.com.fiap.rise.dto.WorkExperienceDTO;
+import br.com.fiap.rise.exception.DataConflictException;
+import br.com.fiap.rise.exception.ResourceNotFoundException;
 import br.com.fiap.rise.model.EducationalExperience;
 import br.com.fiap.rise.model.Resume;
 import br.com.fiap.rise.model.User;
@@ -29,17 +31,17 @@ public class ResumeService {
 
     public ResumeDTO findByUserId(UUID userId) {
         Resume resume = resumeRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Currículo não encontrado para o usuário."));
+                .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado para o usuário."));
 
         return convertToDTO(resume);
     }
 
     public ResumeDTO create(ResumeDTO resumeDTO) {
         User user = userRepository.findById(resumeDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
 
         if (resumeRepository.findByUserId(user.getId()).isPresent()) {
-            throw new RuntimeException("Já existe um currículo para este usuário.");
+            throw new DataConflictException("Já existe um currículo para este usuário.");
         }
 
         Resume resume = convertToEntity(resumeDTO, user);
@@ -48,7 +50,7 @@ public class ResumeService {
 
     public ResumeDTO update(UUID userId, ResumeDTO dto) {
         Resume existingResume = resumeRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Currículo não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado"));
 
         existingResume.setObjective(dto.getObjective());
         return convertToDTO(resumeRepository.save(existingResume));
@@ -56,7 +58,7 @@ public class ResumeService {
 
     public void delete(UUID userId) {
         Resume existingResume = resumeRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Currículo não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado"));
 
         resumeRepository.delete(existingResume);
     }

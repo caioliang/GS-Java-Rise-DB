@@ -1,6 +1,7 @@
 package br.com.fiap.rise.service;
 
 import br.com.fiap.rise.dto.EducationalExperienceDTO;
+import br.com.fiap.rise.exception.ResourceNotFoundException;
 import br.com.fiap.rise.model.EducationalExperience;
 import br.com.fiap.rise.model.Resume;
 import br.com.fiap.rise.repository.EducationalExperienceRepository;
@@ -28,13 +29,13 @@ public class EducationalExperienceService {
 
     public EducationalExperienceDTO findById(UUID id) {
         EducationalExperience educationalExperience = educationalExperienceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Experiência acadêmica não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Experiência acadêmica não encontrada."));
         return convertToDTO(educationalExperience);
     }
 
     public EducationalExperienceDTO create(EducationalExperienceDTO dto) {
         Resume resume = resumeRepository.findById(dto.getResumeId())
-                .orElseThrow(() -> new RuntimeException("Currículo não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado."));
 
         EducationalExperience educationalExperience = convertToEntity(dto, resume);
         EducationalExperience savedEducationalExperience = educationalExperienceRepository.save(educationalExperience);
@@ -43,7 +44,7 @@ public class EducationalExperienceService {
 
     public EducationalExperienceDTO update(UUID id, EducationalExperienceDTO dto) {
         EducationalExperience existingEducationalExperience = educationalExperienceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Experiência acadêmica não encontrada para atualização."));
+                .orElseThrow(() -> new ResourceNotFoundException("Experiência acadêmica não encontrada para atualização."));
 
         existingEducationalExperience.setInstitution(dto.getInstitution());
         existingEducationalExperience.setCourse(dto.getCourse());
@@ -57,7 +58,7 @@ public class EducationalExperienceService {
 
     public void delete(UUID id) {
         EducationalExperience existingEducationalExperience = educationalExperienceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Experiência acadêmica não encontrada para exclusão."));
+                .orElseThrow(() -> new ResourceNotFoundException("Experiência acadêmica não encontrada para exclusão."));
 
         educationalExperienceRepository.delete(existingEducationalExperience);
     }

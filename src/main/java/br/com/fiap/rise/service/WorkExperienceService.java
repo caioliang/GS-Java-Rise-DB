@@ -1,6 +1,7 @@
 package br.com.fiap.rise.service;
 
 import br.com.fiap.rise.dto.WorkExperienceDTO;
+import br.com.fiap.rise.exception.ResourceNotFoundException;
 import br.com.fiap.rise.model.Resume;
 import br.com.fiap.rise.model.User;
 import br.com.fiap.rise.model.WorkExperience;
@@ -25,7 +26,7 @@ public class WorkExperienceService {
 
     public WorkExperienceDTO findById(UUID id) {
         WorkExperience workExperience = workExperienceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Experiência de trabalho não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Experiência de trabalho não encontrada."));
 
         return convertToDTO(workExperience);
     }
@@ -38,7 +39,7 @@ public class WorkExperienceService {
 
     public WorkExperienceDTO create(WorkExperienceDTO dto) {
         Resume resume = resumeRepository.findById(dto.getResumeId())
-                .orElseThrow(() -> new RuntimeException("Currículo não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado."));
 
         WorkExperience savedExperience = workExperienceRepository.save(convertToEntity(dto, resume));
         return convertToDTO(savedExperience);
@@ -46,7 +47,7 @@ public class WorkExperienceService {
 
     public WorkExperienceDTO update(UUID id, WorkExperienceDTO dto) {
         WorkExperience existingWorkExperience = workExperienceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Experiência de trabalho não encontrada para atualização."));
+                .orElseThrow(() -> new ResourceNotFoundException("Experiência de trabalho não encontrada para atualização."));
 
         existingWorkExperience.setCompany(dto.getCompany());
         existingWorkExperience.setRole(dto.getRole());
@@ -60,7 +61,7 @@ public class WorkExperienceService {
 
     public void delete(UUID id) {
         WorkExperience existingWorkExperience = workExperienceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Experiência de trabalho não encontrada para exclusão."));
+                .orElseThrow(() -> new ResourceNotFoundException("Experiência de trabalho não encontrada para exclusão."));
 
         workExperienceRepository.delete(existingWorkExperience);
     }
