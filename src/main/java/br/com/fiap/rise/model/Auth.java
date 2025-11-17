@@ -18,7 +18,7 @@ import java.util.UUID;
 public class Auth implements UserDetails {
 
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     @NotBlank
     @Email
