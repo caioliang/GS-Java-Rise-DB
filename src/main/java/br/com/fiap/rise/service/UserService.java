@@ -1,36 +1,44 @@
 package br.com.fiap.rise.service;
 
+import br.com.fiap.rise.dto.RegisterDTO;
 import br.com.fiap.rise.dto.UserDTO;
 import br.com.fiap.rise.exception.DataConflictException;
 import br.com.fiap.rise.exception.ResourceNotFoundException;
 import br.com.fiap.rise.model.User;
 import br.com.fiap.rise.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.UUID;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AuthService authService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, AuthService authService) {
         this.userRepository = userRepository;
+        this.authService = authService;
+    }
+
+    @Transactional
+    public UserDTO registerUserAndCredentials(RegisterDTO dto) {
+        if (userRepository.findByCpf(dto.getCpf()).isPresent()) {
+            throw new DataConflictException("CPF já cadastrado.");
+        }
+
+        User newUser = convertRegistrationToUserEntity(dto);
+        User savedUser = userRepository.save(newUser);
+        authService.register(dto, savedUser);
+        return convertUserEntityToDTO(userRepository.save(newUser));
     }
 
     public UserDTO findById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
 
-        return convertToDTO(user);
-    }
-
-    public UserDTO create(UserDTO userDTO) {
-        if (userRepository.findByCpf(userDTO.getCpf()).isPresent()) {
-            throw new DataConflictException("CPF já cadastrado.");
-        }
-
-        User savedUser = userRepository.save(convertToEntity(userDTO));
-        return convertToDTO(savedUser);
+        return convertUserEntityToDTO(user);
     }
 
     public UserDTO update(UUID id, UserDTO userDTO) {
@@ -48,7 +56,7 @@ public class UserService {
         existingUser.setBirthDate(userDTO.getBirthDate());
 
         User updatedUser = userRepository.save(existingUser);
-        return convertToDTO(updatedUser);
+        return convertUserEntityToDTO(updatedUser);
     }
 
     public void delete(UUID id) {
@@ -58,21 +66,20 @@ public class UserService {
         userRepository.delete(existingUser);
     }
 
-    private User convertToEntity(UserDTO dto) {
+    private User convertRegistrationToUserEntity(RegisterDTO dto) {
         User user = new User();
         user.setName(dto.getName());
         user.setCpf(dto.getCpf());
         user.setBirthDate(dto.getBirthDate());
-
         return user;
     }
 
-    private UserDTO convertToDTO(User entity) {
+    private UserDTO convertUserEntityToDTO(User entity) {
         UserDTO dto = new UserDTO();
+        dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setCpf(entity.getCpf());
         dto.setBirthDate(entity.getBirthDate());
-
         return dto;
     }
 }

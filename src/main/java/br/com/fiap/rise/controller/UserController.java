@@ -1,5 +1,6 @@
 package br.com.fiap.rise.controller;
 
+import br.com.fiap.rise.dto.RegisterDTO;
 import br.com.fiap.rise.dto.UserDTO;
 import br.com.fiap.rise.service.UserService;
 import jakarta.validation.Valid;
@@ -25,8 +26,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> create(@RequestBody @Valid UserDTO userDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(userDTO));
+    public ResponseEntity<UserDTO> create(@RequestBody @Valid RegisterDTO registrationDTO) {
+        UserDTO savedUser = userService.registerUserAndCredentials(registrationDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     @PutMapping("/{id}")
