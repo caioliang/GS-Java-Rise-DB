@@ -18,8 +18,7 @@ public class EducationalExperienceDTO {
 
     private UUID id;
 
-    @NotNull
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID resumeId;
 
     @NotBlank
