@@ -77,6 +77,8 @@ public class EducationalExperienceService {
 
     private EducationalExperienceDTO convertToDTO(EducationalExperience entity) {
         EducationalExperienceDTO dto = new EducationalExperienceDTO();
+        dto.setId(entity.getId());
+        dto.setResumeId(entity.getResume() != null ? entity.getResume().getId() : null);
         dto.setInstitution(entity.getInstitution());
         dto.setCourse(entity.getCourse());
         dto.setStartDate(entity.getStartDate());

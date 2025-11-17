@@ -80,6 +80,8 @@ public class WorkExperienceService {
 
     private WorkExperienceDTO convertToDTO(WorkExperience entity) {
         WorkExperienceDTO dto = new WorkExperienceDTO();
+        dto.setId(entity.getId());
+        dto.setResumeId(entity.getResume() != null ? entity.getResume().getId() : null);
         dto.setCompany(entity.getCompany());
         dto.setRole(entity.getRole());
         dto.setStartDate(entity.getStartDate());
