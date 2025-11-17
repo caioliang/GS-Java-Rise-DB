@@ -1,21 +1,52 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2025-11-14T21:00:00.000Z",
+  "__export_date": "2025-11-16T21:00:00.000Z",
   "__export_source": "insomnia.desktop.app:v2023.5.8",
   "resources": [
+    {
+      "_id": "req_login",
+      "parentId": "fld_auth",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "{{ _.baseUrl }}/auth/login",
+      "name": "Login",
+      "description": "Autentica um usuário no sistema",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"joao.silva@email.com\",\n  \"password\": \"senha123456\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1700000000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
     {
       "_id": "req_create_user",
       "parentId": "fld_users",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/users",
+      "url": "{{ _.baseUrl }}/users",
       "name": "Create User",
       "description": "Cria um novo usuário no sistema",
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"name\": \"João da Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"password\": \"senha123456\",\n  \"cpf\": \"12345678901\",\n  \"birthDate\": \"1990-05-15\"\n}"
+        "text": "{\n  \"name\": \"João da Silva\",\n  \"cpf\": \"12345678901\",\n  \"birthDate\": \"1990-05-15\",\n  \"email\": \"joao.silva@email.com\",\n  \"password\": \"senha123456\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -40,13 +71,18 @@
       "parentId": "fld_users",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/users/{{ _.userId }}",
+      "url": "{{ _.baseUrl }}/users/{{ _.userId }}",
       "name": "Get User by ID",
       "description": "Busca um usuário pelo ID",
       "method": "GET",
       "body": {},
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
       "authentication": {},
       "metaSortKey": -1699900000000,
       "isPrivate": false,
@@ -63,19 +99,23 @@
       "parentId": "fld_users",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/users/{{ _.userId }}",
+      "url": "{{ _.baseUrl }}/users/{{ _.userId }}",
       "name": "Update User",
       "description": "Atualiza os dados de um usuário",
       "method": "PUT",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"name\": \"João da Silva Santos\",\n  \"email\": \"joao.silva.santos@email.com\",\n  \"password\": \"novaSenha123456\",\n  \"cpf\": \"12345678901\",\n  \"birthDate\": \"1990-05-15\"\n}"
+        "text": "{\n  \"name\": \"João da Silva Santos\",\n  \"cpf\": \"12345678901\",\n  \"birthDate\": \"1990-05-15\"\n}"
       },
       "parameters": [],
       "headers": [
         {
           "name": "Content-Type",
           "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
         }
       ],
       "authentication": {},
@@ -88,13 +128,18 @@
       "parentId": "fld_users",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/users/{{ _.userId }}",
+      "url": "{{ _.baseUrl }}/users/{{ _.userId }}",
       "name": "Delete User",
       "description": "Remove um usuário do sistema",
       "method": "DELETE",
       "body": {},
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
       "authentication": {},
       "metaSortKey": -1699700000000,
       "isPrivate": false,
@@ -105,7 +150,7 @@
       "parentId": "fld_resume",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/users/{{ _.userId }}/resume",
+      "url": "{{ _.baseUrl }}/users/{{ _.userId }}/resume",
       "name": "Create Resume",
       "description": "Cria um currículo para o usuário",
       "method": "POST",
@@ -118,6 +163,10 @@
         {
           "name": "Content-Type",
           "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
         }
       ],
       "authentication": {},
@@ -130,13 +179,18 @@
       "parentId": "fld_resume",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/users/{{ _.userId }}/resume",
+      "url": "{{ _.baseUrl }}/users/{{ _.userId }}/resume",
       "name": "Get Resume by User ID",
       "description": "Busca o currículo de um usuário",
       "method": "GET",
       "body": {},
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
       "authentication": {},
       "metaSortKey": -1699900000000,
       "isPrivate": false,
@@ -147,7 +201,7 @@
       "parentId": "fld_resume",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/users/{{ _.userId }}/resume",
+      "url": "{{ _.baseUrl }}/users/{{ _.userId }}/resume",
       "name": "Update Resume",
       "description": "Atualiza o currículo do usuário",
       "method": "PUT",
@@ -160,6 +214,10 @@
         {
           "name": "Content-Type",
           "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
         }
       ],
       "authentication": {},
@@ -172,13 +230,18 @@
       "parentId": "fld_resume",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/users/{{ _.userId }}/resume",
+      "url": "{{ _.baseUrl }}/users/{{ _.userId }}/resume",
       "name": "Delete Resume",
       "description": "Remove o currículo do usuário",
       "method": "DELETE",
       "body": {},
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
       "authentication": {},
       "metaSortKey": -1699700000000,
       "isPrivate": false,
@@ -189,7 +252,7 @@
       "parentId": "fld_work_exp",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/resumes/{{ _.resumeId }}/work-experiences",
+      "url": "{{ _.baseUrl }}/resumes/{{ _.resumeId }}/work-experiences",
       "name": "Create Work Experience",
       "description": "Adiciona uma experiência profissional ao currículo",
       "method": "POST",
@@ -202,6 +265,10 @@
         {
           "name": "Content-Type",
           "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
         }
       ],
       "authentication": {},
@@ -214,13 +281,18 @@
       "parentId": "fld_work_exp",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/resumes/{{ _.resumeId }}/work-experiences",
+      "url": "{{ _.baseUrl }}/resumes/{{ _.resumeId }}/work-experiences",
       "name": "Get All Work Experiences",
       "description": "Lista todas as experiências profissionais do currículo",
       "method": "GET",
       "body": {},
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
       "authentication": {},
       "metaSortKey": -1699900000000,
       "isPrivate": false,
@@ -231,13 +303,18 @@
       "parentId": "fld_work_exp",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/resumes/{{ _.resumeId }}/work-experiences/{{ _.workExpId }}",
+      "url": "{{ _.baseUrl }}/resumes/{{ _.resumeId }}/work-experiences/{{ _.workExpId }}",
       "name": "Get Work Experience by ID",
       "description": "Busca uma experiência profissional específica",
       "method": "GET",
       "body": {},
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
       "authentication": {},
       "metaSortKey": -1699850000000,
       "isPrivate": false,
@@ -248,7 +325,7 @@
       "parentId": "fld_work_exp",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/resumes/{{ _.resumeId }}/work-experiences/{{ _.workExpId }}",
+      "url": "{{ _.baseUrl }}/resumes/{{ _.resumeId }}/work-experiences/{{ _.workExpId }}",
       "name": "Update Work Experience",
       "description": "Atualiza uma experiência profissional",
       "method": "PUT",
@@ -261,6 +338,10 @@
         {
           "name": "Content-Type",
           "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
         }
       ],
       "authentication": {},
@@ -273,13 +354,18 @@
       "parentId": "fld_work_exp",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/resumes/{{ _.resumeId }}/work-experiences/{{ _.workExpId }}",
+      "url": "{{ _.baseUrl }}/resumes/{{ _.resumeId }}/work-experiences/{{ _.workExpId }}",
       "name": "Delete Work Experience",
       "description": "Remove uma experiência profissional",
       "method": "DELETE",
       "body": {},
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
       "authentication": {},
       "metaSortKey": -1699700000000,
       "isPrivate": false,
@@ -290,7 +376,7 @@
       "parentId": "fld_edu_exp",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/resumes/{{ _.resumeId }}/educational-experiences",
+      "url": "{{ _.baseUrl }}/resumes/{{ _.resumeId }}/educational-experiences",
       "name": "Create Educational Experience",
       "description": "Adiciona uma formação acadêmica ao currículo",
       "method": "POST",
@@ -303,6 +389,10 @@
         {
           "name": "Content-Type",
           "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
         }
       ],
       "authentication": {},
@@ -315,13 +405,18 @@
       "parentId": "fld_edu_exp",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/resumes/{{ _.resumeId }}/educational-experiences",
+      "url": "{{ _.baseUrl }}/resumes/{{ _.resumeId }}/educational-experiences",
       "name": "Get All Educational Experiences",
       "description": "Lista todas as formações acadêmicas do currículo",
       "method": "GET",
       "body": {},
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
       "authentication": {},
       "metaSortKey": -1699900000000,
       "isPrivate": false,
@@ -332,13 +427,18 @@
       "parentId": "fld_edu_exp",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/resumes/{{ _.resumeId }}/educational-experiences/{{ _.eduExpId }}",
+      "url": "{{ _.baseUrl }}/resumes/{{ _.resumeId }}/educational-experiences/{{ _.eduExpId }}",
       "name": "Get Educational Experience by ID",
       "description": "Busca uma formação acadêmica específica",
       "method": "GET",
       "body": {},
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
       "authentication": {},
       "metaSortKey": -1699850000000,
       "isPrivate": false,
@@ -349,7 +449,7 @@
       "parentId": "fld_edu_exp",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/resumes/{{ _.resumeId }}/educational-experiences/{{ _.eduExpId }}",
+      "url": "{{ _.baseUrl }}/resumes/{{ _.resumeId }}/educational-experiences/{{ _.eduExpId }}",
       "name": "Update Educational Experience",
       "description": "Atualiza uma formação acadêmica",
       "method": "PUT",
@@ -362,6 +462,10 @@
         {
           "name": "Content-Type",
           "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
         }
       ],
       "authentication": {},
@@ -374,17 +478,34 @@
       "parentId": "fld_edu_exp",
       "modified": 1700000000000,
       "created": 1700000000000,
-      "url": "localhost:8080/resumes/{{ _.resumeId }}/educational-experiences/{{ _.eduExpId }}",
+      "url": "{{ _.baseUrl }}/resumes/{{ _.resumeId }}/educational-experiences/{{ _.eduExpId }}",
       "name": "Delete Educational Experience",
       "description": "Remove uma formação acadêmica",
       "method": "DELETE",
       "body": {},
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
       "authentication": {},
       "metaSortKey": -1699700000000,
       "isPrivate": false,
       "_type": "request"
+    },
+    {
+      "_id": "fld_auth",
+      "parentId": "wrk_rise",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Authentication",
+      "description": "Endpoints de autenticação",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1701000000000,
+      "_type": "request_group"
     },
     {
       "_id": "fld_users",
@@ -452,6 +573,7 @@
       "name": "Base Environment",
       "data": {
         "baseUrl": "http://localhost:8080",
+        "token": "",
         "userId": "",
         "resumeId": "",
         "workExpId": "",
@@ -460,6 +582,7 @@
       "dataPropertyOrder": {
         "&": [
           "baseUrl",
+          "token",
           "userId",
           "resumeId",
           "workExpId",
