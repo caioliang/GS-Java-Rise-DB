@@ -1,0 +1,26 @@
+az provider register --namespace Microsoft.Web
+
+az provider register --namespace Microsoft.Insights
+az provider register --namespace Microsoft.OperationalInsights
+
+az provider register --namespace Microsoft.ServiceLinker
+
+az provider register --namespace Microsoft.Sql
+
+az provider register --namespace Microsoft.DBforPostgreSQL
+
+az extension add --name application-insights
+
+#Suba primeiro o Banco de Dados
+
+ls -l
+
+chmod +x create-mssql-rise.sh
+
+./create-mssql-rise.sh
+
+#Faça o deploy do WebApp
+
+chmod +x deploy-webapp-rise.sh
+
+./deploy-webapp-rise.sh
