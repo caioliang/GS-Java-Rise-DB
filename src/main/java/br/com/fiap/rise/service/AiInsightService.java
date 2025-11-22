@@ -1,0 +1,111 @@
+package br.com.fiap.rise.service;
+
+import br.com.fiap.rise.dto.InsightDTO;
+import br.com.fiap.rise.dto.ResumeDTO;
+import br.com.fiap.rise.model.Insight;
+import br.com.fiap.rise.repository.InsightRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@Service
+public class AiInsightService {
+
+    private static final String HF_URL = "https://levmn-fiap-rise-ai.hf.space/gerar-insights";
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final InsightRepository insightRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public AiInsightService(InsightRepository insightRepository) {
+        this.insightRepository = insightRepository;
+    }
+
+    public InsightDTO generateInsights(ResumeDTO resume) {
+        Map<String, String> body = new HashMap<>();
+
+        String experiences = buildExperiences(resume);
+        String education = buildEducation(resume);
+        String objective = resume.getObjective() != null ? resume.getObjective() : "";
+
+        body.put("experiencias", experiences);
+        body.put("formacao", education);
+        body.put("objetivo", objective);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
+
+        String rawResponse = restTemplate.postForObject(HF_URL, request, String.class);
+        try {
+            JsonNode root = objectMapper.readTree(rawResponse);
+            JsonNode resultNode = root.path("resultado");
+            InsightDTO dto = objectMapper.treeToValue(resultNode, InsightDTO.class);
+
+            Insight insight = new Insight();
+            insight.setResumeId(resume.getId());
+            insight.setPayload(rawResponse);
+            insightRepository.save(insight);
+
+            return dto;
+         } catch (Exception e) {
+             try {
+                 Insight insight = new Insight();
+                 insight.setResumeId(resume.getId());
+                 insight.setPayload(rawResponse);
+                 insightRepository.save(insight);
+             } catch (Exception ex) {}
+            return new InsightDTO();
+         }
+     }
+
+     public InsightDTO getLastCachedForResume(ResumeDTO resume) {
+         if (resume.getId() == null) return null;
+         return insightRepository.findFirstByResumeIdOrderByCreatedAtDesc(resume.getId())
+                 .map(i -> {
+                     try {
+                         JsonNode root = objectMapper.readTree(i.getPayload());
+                         JsonNode resultNode = root.path("resultado");
+                         return objectMapper.treeToValue(resultNode, InsightDTO.class);
+                     } catch (JsonProcessingException e) {
+                         return null;
+                     }
+                 }).orElse(null);
+     }
+
+    private String buildExperiences(ResumeDTO resume) {
+        if (resume.getWorkExperiences() == null || resume.getWorkExperiences().isEmpty()) return "";
+        List<String> parts = resume.getWorkExperiences().stream()
+                .map(w -> {
+                    String role = w.getRole() != null ? w.getRole() : "";
+                    String company = w.getCompany() != null ? w.getCompany() : "";
+                    return (role + " " + company).trim();
+                })
+                .filter(s -> !s.isBlank())
+                .collect(Collectors.toList());
+        return String.join("; ", parts);
+    }
+
+    private String buildEducation(ResumeDTO resume) {
+        if (resume.getEducationalExperiences() == null || resume.getEducationalExperiences().isEmpty()) return "";
+        List<String> parts = resume.getEducationalExperiences().stream()
+                .map(e -> {
+                    String course = e.getCourse() != null ? e.getCourse() : "";
+                    String inst = e.getInstitution() != null ? e.getInstitution() : "";
+                    return (course + " " + inst).trim();
+                })
+                .filter(s -> !s.isBlank())
+                .collect(Collectors.toList());
+        return String.join("; ", parts);
+    }
+}
