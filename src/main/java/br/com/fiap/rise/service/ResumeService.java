@@ -30,10 +30,13 @@ public class ResumeService {
     }
 
     public ResumeDTO findByUserId(UUID userId) {
-        Resume resume = resumeRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado para o usuário."));
-
-        return convertToDTO(resume);
+        return resumeRepository.findByUserId(userId)
+                .map(this::convertToDTO)
+                .orElseGet(() -> {
+                    ResumeDTO empty = new ResumeDTO();
+                    empty.setUserId(userId);
+                    return create(empty);
+                });
     }
 
     public ResumeDTO create(ResumeDTO resumeDTO) {
@@ -117,6 +120,7 @@ public class ResumeService {
 
     private ResumeDTO convertToDTO(Resume entity) {
         ResumeDTO dto = new ResumeDTO();
+        dto.setId(entity.getId());
         dto.setObjective(entity.getObjective());
         dto.setUserId(entity.getUser() != null ? entity.getUser().getId() : null);
 
@@ -137,6 +141,7 @@ public class ResumeService {
 
     private WorkExperienceDTO mapWorkExperienceToDTO(WorkExperience entity) {
         WorkExperienceDTO dto = new WorkExperienceDTO();
+        dto.setId(entity.getId());
         dto.setResumeId(entity.getResume() != null ? entity.getResume().getId() : null);
         dto.setCompany(entity.getCompany());
         dto.setRole(entity.getRole());
@@ -148,6 +153,7 @@ public class ResumeService {
 
     private EducationalExperienceDTO mapEducationalExperienceToDTO(EducationalExperience entity) {
         EducationalExperienceDTO dto = new EducationalExperienceDTO();
+        dto.setId(entity.getId());
         dto.setResumeId(entity.getResume() != null ? entity.getResume().getId() : null);
         dto.setInstitution(entity.getInstitution());
         dto.setCourse(entity.getCourse());
