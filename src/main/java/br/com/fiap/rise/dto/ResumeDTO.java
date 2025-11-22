@@ -1,11 +1,11 @@
 package br.com.fiap.rise.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ public class ResumeDTO {
 
     private UUID id;
 
-    @NotBlank
+    @Size(max = 200)
     private String objective;
 
 

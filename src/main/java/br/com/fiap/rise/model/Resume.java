@@ -1,7 +1,7 @@
 package br.com.fiap.rise.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class Resume {
     @Id
     private UUID id = UUID.randomUUID();
 
-    @NotBlank
+    @Size(max = 200)
     private String objective;
 
     @OneToOne(fetch = FetchType.LAZY)
