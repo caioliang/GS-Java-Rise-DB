@@ -660,6 +660,53 @@
       "isPrivate": false,
       "metaSortKey": 1700000000000,
       "_type": "environment"
+    },
+    {
+      "_id": "fld_chat",
+      "parentId": "wrk_rise",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Chat AI",
+      "description": "Endpoints para o Assistente de Suporte Rise",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1696200000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_send_message",
+      "parentId": "fld_chat",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "{{ _.baseUrl }}/chat/message",
+      "name": "Send Message to AI (Stateful)",
+      "description": "Envia uma mensagem para o assistente Rise Suporte. A memória é mantida pelo token do usuário.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"message\": \"Eu tenho uma experiência de trabalho em Java. Como eu a cadastro?\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1700000000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
     }
   ]
 }
