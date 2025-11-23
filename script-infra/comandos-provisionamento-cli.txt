@@ -1,3 +1,5 @@
+#Provisionamento dos RECURSOS
+
 az provider register --namespace Microsoft.Web
 
 az provider register --namespace Microsoft.Insights
@@ -11,13 +13,21 @@ az provider register --namespace Microsoft.DBforPostgreSQL
 
 az extension add --name application-insights
 
-#Suba primeiro o Banco de Dados
+
+#Ordem de scripts CLI AZURE
+
+-create-sql-postgres-rise
+-create-rabbitmq-rise
+-deploy-webapp-rise
+
+
 
 ls -l
 
 chmod +x create-mssql-rise.sh
 
 ./create-mssql-rise.sh
+
 
 #Faça o deploy do WebApp
 

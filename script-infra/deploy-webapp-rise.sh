@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# @Creditos a Professor Joao Menk
+# @Creditos ao Professor Joao Menk
 # Variáveis
 
 # Altere todos os rm558868 e seu Repositório
@@ -23,7 +23,12 @@ export APP_INSIGHTS_NAME="ai-rise"
 export SPRING_DATASOURCE_USERNAME="YOUR-USER"
 export SPRING_DATASOURCE_PASSWORD="YOUR-PASSWORD"
 export SPRING_DATASOURCE_URL="jdbc:sqlserver://msqlserver-rise.database.windows.net:1433;database=rise-db;user=rise@msqlserver-rise;password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
-
+export SPRING_PROFILES_ACTIVE="prod"
+export API_KEY="YOUR-API"
+export INSIGHTS_KEY="https://levmn-fiap-rise-ai.hf.space/gerar-insights"
+export RABBITMQ_URL="rabbitmq-rise-unique.brazilsouth.azurecontainer.io"
+export RABBITMQ_USER="YOUR-USER-RABBITMQ"
+export RABBITMQ_PASSWORD="YOUR-PASSWORD-RABBITMQ"
 
 # Criar Application Insights
 az monitor app-insights component create \
@@ -74,8 +79,14 @@ az webapp config appsettings set \
     XDT_MicrosoftApplicationInsights_PreemptSdk="1" \
     SPRING_DATASOURCE_USERNAME="$SPRING_DATASOURCE_USERNAME" \
     SPRING_DATASOURCE_PASSWORD="$SPRING_DATASOURCE_PASSWORD" \
-    SPRING_DATASOURCE_URL="$SPRING_DATASOURCE_URL"
-
+    SPRING_DATASOURCE_URL="$SPRING_DATASOURCE_URL" \
+    SPRING_PROFILES_ACTIVE="$SPRING_PROFILES_ACTIVE" \
+    API_KEY="$API_KEY" \
+    INSIGHTS_KEY="$INSIGHTS_KEY" \
+	RABBITMQ_URL="$RABBITMQ_URL" \
+    RABBITMQ_USER="$RABBITMQ_USER" \
+    RABBITMQ_PASSWORD="$RABBITMQ_PASSWORD" 
+	
 # Reiniciar o Web App
 az webapp restart \
   --name "$WEBAPP_NAME" \
