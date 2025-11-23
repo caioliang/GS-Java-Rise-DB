@@ -567,6 +567,50 @@
       "_type": "request_group"
     },
     {
+      "_id": "req_trigger_insight_generation",
+      "parentId": "fld_insights",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "{{ _.baseUrl }}/users/{{ _.userId }}/insights",
+      "name": "1. Trigger Insight Generation (POST 202)",
+      "description": "Envia uma mensagem para a fila do RabbitMQ para processamento assíncrono do insight (retorna 202 Accepted imediatamente).",
+      "method": "POST",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1696450000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_insights",
+      "parentId": "fld_insights",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "url": "{{ _.baseUrl }}/users/{{ _.userId }}/insights",
+      "name": "2. Get Latest Insight (Leitura)",
+      "description": "Consulta o último insight salvo no banco de dados. Retorna 200 OK se pronto, ou 204 No Content se ainda estiver em processamento na fila.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1696400000000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
       "_id": "req_get_insights",
       "parentId": "fld_insights",
       "modified": 1700000000000,
@@ -585,34 +629,6 @@
       ],
       "authentication": {},
       "metaSortKey": -1696400000000,
-      "isPrivate": false,
-      "settingStoreCookies": true,
-      "settingSendCookies": true,
-      "settingDisableRenderRequestBody": false,
-      "settingEncodeUrl": true,
-      "settingRebuildPath": true,
-      "settingFollowRedirects": "global",
-      "_type": "request"
-    },
-    {
-      "_id": "req_get_insights_cached",
-      "parentId": "fld_insights",
-      "modified": 1700000000000,
-      "created": 1700000000000,
-      "url": "{{ _.baseUrl }}/users/{{ _.userId }}/insights?cached=true",
-      "name": "Get Insights (cached)",
-      "description": "Return last saved insight from the database if available",
-      "method": "GET",
-      "body": {},
-      "parameters": [],
-      "headers": [
-        {
-          "name": "Authorization",
-          "value": "Bearer {{ _.token }}"
-        }
-      ],
-      "authentication": {},
-      "metaSortKey": -1696300000000,
       "isPrivate": false,
       "settingStoreCookies": true,
       "settingSendCookies": true,
