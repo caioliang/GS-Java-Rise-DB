@@ -495,6 +495,66 @@
       "_type": "request"
     },
     {
+      "_id": "fld_auth",
+      "parentId": "wrk_rise",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Auth",
+      "description": "Authentication endpoints",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1700200000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_users",
+      "parentId": "wrk_rise",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Users",
+      "description": "User management endpoints",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1700100000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_resume",
+      "parentId": "wrk_rise",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Resume",
+      "description": "Resume endpoints",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1700050000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_work_exp",
+      "parentId": "fld_resume",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Work Experiences",
+      "description": "Work experience endpoints",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1700040000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_edu_exp",
+      "parentId": "fld_resume",
+      "modified": 1700000000000,
+      "created": 1700000000000,
+      "name": "Educational Experiences",
+      "description": "Educational experience endpoints",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1700030000000,
+      "_type": "request_group"
+    },
+    {
       "_id": "fld_insights",
       "parentId": "wrk_rise",
       "modified": 1700000000000,
