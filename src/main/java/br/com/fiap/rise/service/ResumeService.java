@@ -11,6 +11,8 @@ import br.com.fiap.rise.model.User;
 import br.com.fiap.rise.model.WorkExperience;
 import br.com.fiap.rise.repository.ResumeRepository;
 import br.com.fiap.rise.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -29,6 +31,7 @@ public class ResumeService {
         this.userRepository = userRepository;
     }
 
+    @Cacheable(value = "resumes", key = "#userId")
     public ResumeDTO findByUserId(UUID userId) {
         return resumeRepository.findByUserId(userId)
                 .map(this::convertToDTO)
@@ -51,6 +54,7 @@ public class ResumeService {
         return convertToDTO(resumeRepository.save(resume));
     }
 
+    @CacheEvict(value = "resumes", key = "#userId")
     public ResumeDTO update(UUID userId, ResumeDTO dto) {
         Resume existingResume = resumeRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado"));
@@ -59,6 +63,7 @@ public class ResumeService {
         return convertToDTO(resumeRepository.save(existingResume));
     }
 
+    @CacheEvict(value = "resumes", key = "#userId")
     public void delete(UUID userId) {
         Resume existingResume = resumeRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado"));

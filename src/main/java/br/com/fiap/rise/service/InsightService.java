@@ -7,6 +7,7 @@ import br.com.fiap.rise.repository.InsightRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,14 +20,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class AiInsightService {
+public class InsightService {
 
     private static final String HF_URL = "https://levmn-fiap-rise-ai.hf.space/gerar-insights";
     private final RestTemplate restTemplate = new RestTemplate();
     private final InsightRepository insightRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public AiInsightService(InsightRepository insightRepository) {
+    public InsightService(InsightRepository insightRepository) {
         this.insightRepository = insightRepository;
     }
 
@@ -85,6 +86,7 @@ public class AiInsightService {
          }
      }
 
+    @Cacheable(value = "insights", key = "#resume.id")
      public InsightDTO getLastCachedForResume(ResumeDTO resume) {
          if (resume.getId() == null) return null;
          return insightRepository.findFirstByResumeIdOrderByCreatedAtDesc(resume.getId())

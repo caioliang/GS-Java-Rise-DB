@@ -7,6 +7,8 @@ import br.com.fiap.rise.model.User;
 import br.com.fiap.rise.model.WorkExperience;
 import br.com.fiap.rise.repository.ResumeRepository;
 import br.com.fiap.rise.repository.WorkExperienceRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +33,14 @@ public class WorkExperienceService {
         return convertToDTO(workExperience);
     }
 
+    @Cacheable(value = "workExpList", key = "#resumeId")
     public List<WorkExperienceDTO> findByResumeId(UUID resumeId) {
         return workExperienceRepository.findByResumeId(resumeId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
+    @CacheEvict(value = "workExpList", key = "#dto.resumeId")
     public WorkExperienceDTO create(WorkExperienceDTO dto) {
         Resume resume = resumeRepository.findById(dto.getResumeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado."));
@@ -45,6 +49,7 @@ public class WorkExperienceService {
         return convertToDTO(savedExperience);
     }
 
+    @CacheEvict(value = "workExpList", key = "#dto.resumeId")
     public WorkExperienceDTO update(UUID id, WorkExperienceDTO dto) {
         WorkExperience existingWorkExperience = workExperienceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Experiência de trabalho não encontrada para atualização."));
@@ -59,6 +64,7 @@ public class WorkExperienceService {
         return convertToDTO(updatedExperience);
     }
 
+    @CacheEvict(value = "workExpList", key = "#dto.resumeId")
     public void delete(UUID id) {
         WorkExperience existingWorkExperience = workExperienceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Experiência de trabalho não encontrada para exclusão."));

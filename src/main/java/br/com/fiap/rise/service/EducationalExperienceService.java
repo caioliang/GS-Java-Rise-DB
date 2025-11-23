@@ -6,6 +6,8 @@ import br.com.fiap.rise.model.EducationalExperience;
 import br.com.fiap.rise.model.Resume;
 import br.com.fiap.rise.repository.EducationalExperienceRepository;
 import br.com.fiap.rise.repository.ResumeRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class EducationalExperienceService {
         this.resumeRepository = resumeRepository;
     }
 
+    @Cacheable(value = "eduExpList", key = "#resumeId")
     public List<EducationalExperienceDTO> findByResumeId(UUID resumeId) {
         return educationalExperienceRepository.findByResumeId(resumeId).stream()
                 .map(this::convertToDTO)
@@ -33,6 +36,7 @@ public class EducationalExperienceService {
         return convertToDTO(educationalExperience);
     }
 
+    @CacheEvict(value = "eduExpList", key = "#dto.resumeId")
     public EducationalExperienceDTO create(EducationalExperienceDTO dto) {
         Resume resume = resumeRepository.findById(dto.getResumeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado."));
@@ -42,6 +46,7 @@ public class EducationalExperienceService {
         return convertToDTO(savedEducationalExperience);
     }
 
+    @CacheEvict(value = "eduExpList", key = "#dto.resumeId")
     public EducationalExperienceDTO update(UUID id, EducationalExperienceDTO dto) {
         EducationalExperience existingEducationalExperience = educationalExperienceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Experiência acadêmica não encontrada para atualização."));
@@ -56,6 +61,7 @@ public class EducationalExperienceService {
         return convertToDTO(updatedEducationalExperience);
     }
 
+    @CacheEvict(value = "eduExpList", key = "#dto.resumeId")
     public void delete(UUID id) {
         EducationalExperience existingEducationalExperience = educationalExperienceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Experiência acadêmica não encontrada para exclusão."));
