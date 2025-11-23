@@ -3,18 +3,17 @@ package br.com.fiap.rise.service;
 import br.com.fiap.rise.dto.WorkExperienceDTO;
 import br.com.fiap.rise.exception.ResourceNotFoundException;
 import br.com.fiap.rise.model.Resume;
-import br.com.fiap.rise.model.User;
 import br.com.fiap.rise.model.WorkExperience;
 import br.com.fiap.rise.repository.ResumeRepository;
 import br.com.fiap.rise.repository.WorkExperienceRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.CacheManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class WorkExperienceService {
@@ -38,10 +37,9 @@ public class WorkExperienceService {
     }
 
     @Cacheable(value = "workExpList", key = "#resumeId")
-    public List<WorkExperienceDTO> findByResumeId(UUID resumeId) {
-        return workExperienceRepository.findByResumeId(resumeId).stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public Page<WorkExperienceDTO> findByResumeId(UUID resumeId, Pageable pageable) {
+        return workExperienceRepository.findByResumeId(resumeId, pageable)
+                .map(this::convertToDTO);
     }
 
     @CacheEvict(value = "workExpList", key = "#dto.resumeId")
