@@ -33,14 +33,11 @@ public class InsightController {
 
     @GetMapping
     public ResponseEntity<InsightDTO> getInsights(@PathVariable UUID userId) {
-        ResumeDTO resume = resumeService.findByUserId(userId);
-
-        InsightDTO cachedResp = insightService.getLastCachedForResume(resume);
+        InsightDTO cachedResp = insightService.getLastCachedForResume(resumeService.findByUserId(userId));
 
         if (cachedResp != null) {
             return ResponseEntity.ok(cachedResp);
         }
-
         return ResponseEntity.noContent().build();
     }
 }

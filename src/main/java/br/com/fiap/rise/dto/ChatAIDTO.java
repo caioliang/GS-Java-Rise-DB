@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChatAIDTO {
 
-    @NotBlank(message = "A mensagem não pode ser vazia.")
+    @NotBlank
     private String message;
 }
