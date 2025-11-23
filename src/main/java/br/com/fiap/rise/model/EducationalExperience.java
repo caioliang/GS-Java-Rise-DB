@@ -30,6 +30,7 @@ public class EducationalExperience {
 
     private LocalDate endDate;
 
+    @Lob
     @NotBlank
     private String description;
 

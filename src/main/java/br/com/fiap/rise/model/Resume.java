@@ -15,6 +15,7 @@ public class Resume {
     @Id
     private UUID id = UUID.randomUUID();
 
+    @Lob
     @Size(max = 200)
     private String objective;
 

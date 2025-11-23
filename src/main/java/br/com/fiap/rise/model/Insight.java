@@ -20,6 +20,7 @@ public class Insight {
     @Column(name = "resume_id")
     private UUID resumeId;
 
+    @Lob
     @Column(columnDefinition = "jsonb")
     @JdbcTypeCode(SqlTypes.JSON)
     private String payload;
