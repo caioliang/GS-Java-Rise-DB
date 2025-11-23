@@ -1,0 +1,15 @@
+package br.com.fiap.rise.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ChatAIDTO {
+
+    @NotBlank(message = "A mensagem não pode ser vazia.")
+    private String message;
+}
