@@ -9,6 +9,8 @@ import br.com.fiap.rise.repository.ResumeRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.CacheManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,10 +29,9 @@ public class EducationalExperienceService {
     }
 
     @Cacheable(value = "eduExpList", key = "#resumeId")
-    public List<EducationalExperienceDTO> findByResumeId(UUID resumeId) {
-        return educationalExperienceRepository.findByResumeId(resumeId).stream()
-                .map(this::convertToDTO)
-                .toList();
+    public Page<EducationalExperienceDTO> findByResumeId(UUID resumeId, Pageable pageable) {
+        return educationalExperienceRepository.findByResumeId(resumeId, pageable)
+                .map(this::convertToDTO);
     }
 
     public EducationalExperienceDTO findById(UUID id) {

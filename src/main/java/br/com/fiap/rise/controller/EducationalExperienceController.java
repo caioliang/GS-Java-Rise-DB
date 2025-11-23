@@ -3,6 +3,8 @@ package br.com.fiap.rise.controller;
 import br.com.fiap.rise.dto.EducationalExperienceDTO;
 import br.com.fiap.rise.service.EducationalExperienceService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,8 @@ public class EducationalExperienceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EducationalExperienceDTO>> findAllByResumeId(@PathVariable UUID resumeId) {
-        return ResponseEntity.ok(educationalExperienceService.findByResumeId(resumeId));
+    public ResponseEntity<Page<EducationalExperienceDTO>> findAllByResumeId(@PathVariable UUID resumeId, Pageable pageable) {
+        return ResponseEntity.ok(educationalExperienceService.findByResumeId(resumeId, pageable));
     }
 
     @GetMapping("/{id}")

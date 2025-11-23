@@ -51,11 +51,6 @@ public class ResumeService {
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado para processamento."));
 
-        var eduList = educationalExperienceRepository.findByResumeId(resumeId);
-        if (eduList != null) {
-            dto.setEducationalExperiences(eduList.stream().map(this::mapEducationalExperienceToDTO).collect(Collectors.toList()));
-        }
-
         return dto;
     }
 
