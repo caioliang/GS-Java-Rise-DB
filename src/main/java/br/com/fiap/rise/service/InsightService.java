@@ -7,6 +7,7 @@ import br.com.fiap.rise.repository.InsightRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpEntity;
@@ -23,15 +24,17 @@ import java.util.stream.Collectors;
 @Service
 public class InsightService {
 
-    private static final String HF_URL = "https://levmn-fiap-rise-ai.hf.space/gerar-insights";
+    private final String hfUrl;
     private final RestTemplate restTemplate = new RestTemplate();
     private final InsightRepository insightRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final CacheManager cacheManager;
 
-    public InsightService(InsightRepository insightRepository, CacheManager cacheManager) {
+    public InsightService(InsightRepository insightRepository, CacheManager cacheManager,
+                          @org.springframework.beans.factory.annotation.Value("${spring.ai.hf.base-url}") String hfUrl) {
         this.insightRepository = insightRepository;
         this.cacheManager = cacheManager;
+        this.hfUrl = hfUrl;
     }
 
     public InsightDTO generateInsightsSync(ResumeDTO resume) {
@@ -50,7 +53,7 @@ public class InsightService {
 
         HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
 
-        String rawResponse = restTemplate.postForObject(HF_URL, request, String.class);
+        String rawResponse = restTemplate.postForObject(hfUrl, request, String.class);
         try {
             JsonNode root = objectMapper.readTree(rawResponse);
             JsonNode resultNode = root.path("resultado");
