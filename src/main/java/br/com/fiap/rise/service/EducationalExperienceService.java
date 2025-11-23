@@ -8,6 +8,7 @@ import br.com.fiap.rise.repository.EducationalExperienceRepository;
 import br.com.fiap.rise.repository.ResumeRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +18,12 @@ import java.util.UUID;
 public class EducationalExperienceService {
     private final EducationalExperienceRepository educationalExperienceRepository;
     private final ResumeRepository resumeRepository;
+    private final CacheManager cacheManager;
 
-    public EducationalExperienceService(EducationalExperienceRepository educationalExperienceRepository, ResumeRepository resumeRepository) {
+    public EducationalExperienceService(EducationalExperienceRepository educationalExperienceRepository, ResumeRepository resumeRepository, CacheManager cacheManager) {
         this.educationalExperienceRepository = educationalExperienceRepository;
         this.resumeRepository = resumeRepository;
+        this.cacheManager = cacheManager;
     }
 
     @Cacheable(value = "eduExpList", key = "#resumeId")
@@ -43,6 +46,12 @@ public class EducationalExperienceService {
 
         EducationalExperience educationalExperience = convertToEntity(dto, resume);
         EducationalExperience savedEducationalExperience = educationalExperienceRepository.save(educationalExperience);
+        try {
+            if (resume.getUser() != null && cacheManager.getCache("resumes") != null) {
+                cacheManager.getCache("resumes").evict(resume.getUser().getId());
+            }
+        } catch (Exception ex) { }
+
         return convertToDTO(savedEducationalExperience);
     }
 
@@ -58,15 +67,26 @@ public class EducationalExperienceService {
         existingEducationalExperience.setDescription(dto.getDescription());
 
         EducationalExperience updatedEducationalExperience = educationalExperienceRepository.save(existingEducationalExperience);
+        try {
+            if (existingEducationalExperience.getResume() != null && existingEducationalExperience.getResume().getUser() != null && cacheManager.getCache("resumes") != null) {
+                cacheManager.getCache("resumes").evict(existingEducationalExperience.getResume().getUser().getId());
+            }
+        } catch (Exception ex) { }
+
         return convertToDTO(updatedEducationalExperience);
     }
 
-    @CacheEvict(value = "eduExpList", key = "#dto.resumeId")
+    @CacheEvict(value = "eduExpList", allEntries = true)
     public void delete(UUID id) {
         EducationalExperience existingEducationalExperience = educationalExperienceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Experiência acadêmica não encontrada para exclusão."));
 
         educationalExperienceRepository.delete(existingEducationalExperience);
+        try {
+            if (existingEducationalExperience.getResume() != null && existingEducationalExperience.getResume().getUser() != null && cacheManager.getCache("resumes") != null) {
+                cacheManager.getCache("resumes").evict(existingEducationalExperience.getResume().getUser().getId());
+            }
+        } catch (Exception ex) { }
     }
 
     private EducationalExperience convertToEntity(EducationalExperienceDTO dto, Resume resume) {

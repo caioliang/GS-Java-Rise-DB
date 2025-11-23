@@ -54,9 +54,9 @@ public class WorkExperienceController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable UUID resumeId, @PathVariable UUID id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        log.debug("WorkExperienceController.delete: auth={} principal={} authorities={}", auth, auth != null ? auth.getPrincipal() : null, auth != null ? auth.getAuthorities() : null);
+        log.debug("WorkExperienceController.delete: resumeId={} id={} auth={} principal={} authorities={}", resumeId, id, auth, auth != null ? auth.getPrincipal() : null, auth != null ? auth.getAuthorities() : null);
         workExperienceService.delete(id);
         return ResponseEntity.noContent().build();
     }
