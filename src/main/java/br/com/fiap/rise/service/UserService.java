@@ -6,6 +6,8 @@ import br.com.fiap.rise.exception.DataConflictException;
 import br.com.fiap.rise.exception.ResourceNotFoundException;
 import br.com.fiap.rise.model.User;
 import br.com.fiap.rise.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +36,7 @@ public class UserService {
         return convertUserEntityToDTO(userRepository.save(newUser));
     }
 
+    @Cacheable(value = "users", key = "#id")
     public UserDTO findById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
@@ -41,6 +44,7 @@ public class UserService {
         return convertUserEntityToDTO(user);
     }
 
+    @CacheEvict(value = "users", key = "#id")
     public UserDTO update(UUID id, UserDTO userDTO) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado para atualização."));
@@ -59,6 +63,7 @@ public class UserService {
         return convertUserEntityToDTO(updatedUser);
     }
 
+    @CacheEvict(value = "users", key = "#id")
     public void delete(UUID id) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado para exclusão."));
