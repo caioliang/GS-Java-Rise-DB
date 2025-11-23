@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class ResumeService {
@@ -50,6 +51,13 @@ public class ResumeService {
         ResumeDTO dto = resumeRepository.findByIdWithCollections(resumeId)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado para processamento."));
+
+        try {
+            var eduPage = educationalExperienceRepository.findByResumeId(resumeId, Pageable.unpaged());
+            if (eduPage != null && eduPage.hasContent()) {
+                dto.setEducationalExperiences(eduPage.getContent().stream().map(this::mapEducationalExperienceToDTO).collect(Collectors.toList()));
+            }
+        } catch (Exception ex) { }
 
         return dto;
     }
