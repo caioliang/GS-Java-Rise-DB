@@ -54,7 +54,17 @@ public class AiInsightService {
 
             Insight insight = new Insight();
             insight.setResumeId(resume.getId());
-            insight.setPayload(rawResponse);
+            try {
+                insight.setPayload(resultNode.toString());
+            } catch (Exception ex) {
+                insight.setPayload(rawResponse);
+            }
+            try {
+                java.util.Optional<Insight> existing = insightRepository.findFirstByResumeIdOrderByCreatedAtDesc(resume.getId());
+                if (existing.isPresent()) {
+                    insight.setId(existing.get().getId());
+                }
+            } catch (Exception ex) { }
             insightRepository.save(insight);
 
             return dto;
@@ -63,6 +73,12 @@ public class AiInsightService {
                  Insight insight = new Insight();
                  insight.setResumeId(resume.getId());
                  insight.setPayload(rawResponse);
+                 try {
+                     java.util.Optional<Insight> existing = insightRepository.findFirstByResumeIdOrderByCreatedAtDesc(resume.getId());
+                     if (existing.isPresent()) {
+                         insight.setId(existing.get().getId());
+                     }
+                 } catch (Exception ex) { }
                  insightRepository.save(insight);
              } catch (Exception ex) {}
             return new InsightDTO();
@@ -76,6 +92,9 @@ public class AiInsightService {
                      try {
                          JsonNode root = objectMapper.readTree(i.getPayload());
                          JsonNode resultNode = root.path("resultado");
+                         if (resultNode.isMissingNode() || resultNode.isNull()) {
+                             resultNode = root;
+                         }
                          return objectMapper.treeToValue(resultNode, InsightDTO.class);
                      } catch (JsonProcessingException e) {
                          return null;
