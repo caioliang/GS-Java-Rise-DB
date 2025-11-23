@@ -9,11 +9,13 @@ import br.com.fiap.rise.model.EducationalExperience;
 import br.com.fiap.rise.model.Resume;
 import br.com.fiap.rise.model.User;
 import br.com.fiap.rise.model.WorkExperience;
+import br.com.fiap.rise.repository.EducationalExperienceRepository;
 import br.com.fiap.rise.repository.ResumeRepository;
 import br.com.fiap.rise.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.hibernate.Hibernate;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,21 +27,36 @@ public class ResumeService {
 
     private final ResumeRepository resumeRepository;
     private final UserRepository userRepository;
+    private final EducationalExperienceRepository educationalExperienceRepository;
 
-    public ResumeService(ResumeRepository resumeRepository, UserRepository userRepository) {
+    public ResumeService(ResumeRepository resumeRepository, UserRepository userRepository, EducationalExperienceRepository educationalExperienceRepository) {
         this.resumeRepository = resumeRepository;
         this.userRepository = userRepository;
+        this.educationalExperienceRepository = educationalExperienceRepository;
     }
 
     @Cacheable(value = "resumes", key = "#userId")
     public ResumeDTO findByUserId(UUID userId) {
         return resumeRepository.findByUserId(userId)
-                .map(this::convertToDTO)
+                .map(resume -> findByResumeIdOnly(resume.getId()))
                 .orElseGet(() -> {
                     ResumeDTO empty = new ResumeDTO();
                     empty.setUserId(userId);
                     return create(empty);
                 });
+    }
+
+    public ResumeDTO findByResumeIdOnly(UUID resumeId) {
+        ResumeDTO dto = resumeRepository.findByIdWithCollections(resumeId)
+                .map(this::convertToDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado para processamento."));
+
+        var eduList = educationalExperienceRepository.findByResumeId(resumeId);
+        if (eduList != null) {
+            dto.setEducationalExperiences(eduList.stream().map(this::mapEducationalExperienceToDTO).collect(Collectors.toList()));
+        }
+
+        return dto;
     }
 
     public ResumeDTO create(ResumeDTO resumeDTO) {
@@ -129,16 +146,16 @@ public class ResumeService {
         dto.setObjective(entity.getObjective());
         dto.setUserId(entity.getUser() != null ? entity.getUser().getId() : null);
 
-        if (entity.getWorkExperiences() != null) {
+        if (Hibernate.isInitialized(entity.getWorkExperiences()) && entity.getWorkExperiences() != null) {
             dto.setWorkExperiences(entity.getWorkExperiences().stream()
-                    .map(this::mapWorkExperienceToDTO)
-                    .collect(Collectors.toList()));
+                .map(this::mapWorkExperienceToDTO)
+                .collect(Collectors.toList()));
         }
 
-        if (entity.getEducationalExperiences() != null) {
+        if (Hibernate.isInitialized(entity.getEducationalExperiences()) && entity.getEducationalExperiences() != null) {
             dto.setEducationalExperiences(entity.getEducationalExperiences().stream()
-                    .map(this::mapEducationalExperienceToDTO)
-                    .collect(Collectors.toList()));
+                .map(this::mapEducationalExperienceToDTO)
+                .collect(Collectors.toList()));
         }
 
         return dto;

@@ -9,6 +9,7 @@ import br.com.fiap.rise.repository.ResumeRepository;
 import br.com.fiap.rise.repository.WorkExperienceRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,12 +19,15 @@ import java.util.stream.Collectors;
 @Service
 public class WorkExperienceService {
 
+
     private final WorkExperienceRepository workExperienceRepository;
     private final ResumeRepository resumeRepository;
+    private final CacheManager cacheManager;
 
-    public WorkExperienceService(WorkExperienceRepository workExperienceRepository, ResumeRepository resumeRepository) {
+    public WorkExperienceService(WorkExperienceRepository workExperienceRepository, ResumeRepository resumeRepository, CacheManager cacheManager) {
         this.workExperienceRepository = workExperienceRepository;
         this.resumeRepository = resumeRepository;
+        this.cacheManager = cacheManager;
     }
 
     public WorkExperienceDTO findById(UUID id) {
@@ -46,6 +50,12 @@ public class WorkExperienceService {
                 .orElseThrow(() -> new ResourceNotFoundException("Currículo não encontrado."));
 
         WorkExperience savedExperience = workExperienceRepository.save(convertToEntity(dto, resume));
+        try {
+            if (resume.getUser() != null && cacheManager.getCache("resumes") != null) {
+                cacheManager.getCache("resumes").evict(resume.getUser().getId());
+            }
+        } catch (Exception ex) { }
+
         return convertToDTO(savedExperience);
     }
 
@@ -61,15 +71,29 @@ public class WorkExperienceService {
         existingWorkExperience.setDescription(dto.getDescription());
 
         WorkExperience updatedExperience = workExperienceRepository.save(existingWorkExperience);
+        try {
+            if (existingWorkExperience.getResume() != null && existingWorkExperience.getResume().getUser() != null && cacheManager.getCache("resumes") != null) {
+                cacheManager.getCache("resumes").evict(existingWorkExperience.getResume().getUser().getId());
+            }
+        } catch (Exception ex) { }
+
         return convertToDTO(updatedExperience);
     }
 
-    @CacheEvict(value = "workExpList", key = "#dto.resumeId")
+    @CacheEvict(value = "workExpList", allEntries = true)
     public void delete(UUID id) {
-        WorkExperience existingWorkExperience = workExperienceRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Experiência de trabalho não encontrada para exclusão."));
+        var opt = workExperienceRepository.findById(id);
+        if (opt.isEmpty()) {
+            throw new ResourceNotFoundException("Experiência de trabalho não encontrada para exclusão. id=" + id);
+        }
 
+        WorkExperience existingWorkExperience = opt.get();
         workExperienceRepository.delete(existingWorkExperience);
+        try {
+            if (existingWorkExperience.getResume() != null && existingWorkExperience.getResume().getUser() != null && cacheManager.getCache("resumes") != null) {
+                cacheManager.getCache("resumes").evict(existingWorkExperience.getResume().getUser().getId());
+            }
+        } catch (Exception ex) { }
     }
 
     private WorkExperience convertToEntity(WorkExperienceDTO dto, Resume resume) {
