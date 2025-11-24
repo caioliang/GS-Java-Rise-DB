@@ -57,7 +57,6 @@ public class WorkExperienceService {
         return convertToDTO(savedExperience);
     }
 
-    @CacheEvict(value = "workExpList", key = "#dto.resumeId")
     public WorkExperienceDTO update(UUID id, WorkExperienceDTO dto) {
         WorkExperience existingWorkExperience = workExperienceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Experiência de trabalho não encontrada para atualização."));
