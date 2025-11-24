@@ -4,6 +4,9 @@
 
 Rise é a API backend para o projeto Rise — serviço que mantém currículos (resumes), experiências (work/educational experiences) e gera *insights* assíncronos usando um serviço de IA externo (HuggingFace / Spaces). A aplicação é construída com Spring Boot, persiste dados em PostgreSQL, usa RabbitMQ para enfileirar tarefas de geração de insights e emprega cache para melhorar performance.
 
+## 📋 DB-ORACLE - Requisitos:
+- **Conta Oracle Fiap**: Declarar variaveis de ambiente: ORACLE_USER e ORACLE_PASSWORD
+
 ## 👥 Autores
 - **Allan Brito Moreira** - RM558948
 - **Caio Liang** - RM558868
