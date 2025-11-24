@@ -56,7 +56,6 @@ public class EducationalExperienceService {
         return convertToDTO(savedEducationalExperience);
     }
 
-    @CacheEvict(value = "eduExpList", key = "#dto.resumeId")
     public EducationalExperienceDTO update(UUID id, EducationalExperienceDTO dto) {
         EducationalExperience existingEducationalExperience = educationalExperienceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Experiência acadêmica não encontrada para atualização."));
